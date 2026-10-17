@@ -385,11 +385,35 @@ Students participating in online tests or remote proctored exams could potential
 | **Unfair grading distribution** | When dishonest scores skew grading curves, honest test-takers are unfairly disadvantaged in competitive academic rankings. |
 | **Institutional reputation loss** | Widespread unaddressed remote assistance during high-stakes exams can damage an institution's accreditation standing and educational reputation. |
 
----
-
 ## 📄 License & Author
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for full details.
+<div align="center">
 
-**Author & Creator:** **Muhammad Rafique**  
-**Repository:** [https://github.com/Muhammad9985/exams](https://github.com/Muhammad9985/exams)
+### 👨‍💻 Created & Maintained by **Muhammad Rafique**
+
+<br/>
+
+<a href="https://mr-software.online/" target="_blank">
+  <img src="https://img.shields.io/badge/Website-mr--software.online-4F46E5?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Portfolio Website" />
+</a>
+&nbsp;&nbsp;
+<a href="https://www.linkedin.com/in/muhammad-rafique-944b05159/" target="_blank">
+  <img src="https://img.shields.io/badge/LinkedIn-Profile-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Profile" />
+</a>
+&nbsp;&nbsp;
+<a href="https://github.com/Muhammad9985" target="_blank">
+  <img src="https://img.shields.io/badge/GitHub-Profile-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Profile" />
+</a>
+
+<br/><br/>
+
+<a href="LICENSE">
+  <img src="https://img.shields.io/badge/License-MIT-22c55e.svg?style=for-the-badge" alt="MIT License" />
+</a>
+
+<br/>
+
+<sub>This project is open-source under the <strong>MIT License</strong>. Free for private, educational, and commercial use.</sub>
+
+</div>
+
