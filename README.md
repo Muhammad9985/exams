@@ -210,8 +210,8 @@ ScreenMiror/
 ├── STOP_MYACS.bat              # 1-Click clean shutdown (kills background processes & frees ports)
 ├── add_firewall_rule.bat       # Configures Windows Defender Firewall for LAN access
 ├── test_system.py              # Automated 7-part test suite for all system components
+├── LICENSE                     # MIT License (Muhammad Rafique)
 ├── requirements.txt            # Python dependencies
-├── prompt                      # Original specification document
 └── myacs/
     ├── core/
     │   ├── device_identity.py  # MachineGuid permanent ID & JSON persistent config
@@ -355,3 +355,12 @@ If another computer on your LAN cannot access the host URL, run **`add_firewall_
 - **Cannot connect from second PC:** Ensure both computers are connected to the same Wi-Fi or subnet, and that Windows Network Profile is set to **Private Network**.
 - **Port 45821 in use:** Run `STOP_MYACS.bat` to terminate any previous background instances and release the ports.
 - **Host Cursor Blinking:** Solved natively in MyAcs via `mss.windows.gdi.CAPTUREBLT = 0`. No third-party drivers or monitor hooks required.
+
+---
+
+## 📄 License & Author
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for full details.
+
+**Author & Creator:** **Muhammad Rafique**  
+**Repository:** [https://github.com/Muhammad9985/exams](https://github.com/Muhammad9985/exams)
