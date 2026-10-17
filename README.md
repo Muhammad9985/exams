@@ -364,7 +364,7 @@ If another computer on your LAN cannot access the host URL, run **`add_firewall_
 > **Notice to Educational Institutions, Examination Boards, and Online Proctoring Systems:**
 > Because **MyAcs** operates 100% offline over a Local Area Network (LAN) without cloud servers, external internet traffic, or third-party accounts, it presents a known security risk and disadvantage for institutions administering computer-based tests and online proctored examinations.
 
-### 🔍 Risk of Academic Misuse
+### 1. Risk of Academic Misuse
 Students participating in online tests or remote proctored exams could potentially misuse this software to covertly mirror exam screens to a secondary computer, bypassing conventional online exam protections:
 - **Circumventing Online Exam Protectors:** Conventional automated proctoring services (such as [Examus](https://ru.examus.net/), Safe Exam Browser, Proctorio, Examity, etc.) predominantly inspect external cloud connections (TeamViewer, AnyDesk, Discord, Zoom) and browser tab switches.
 - **Zero Internet Traffic:** Because MyAcs streams strictly across the local Wi-Fi / Ethernet subnet, external cloud firewall rules and cloud traffic monitors will not detect data leaving the local network.
@@ -372,12 +372,18 @@ Students participating in online tests or remote proctored exams could potential
 - **Silent Background Execution:** The host service operates silently as `pythonw.exe` without taking taskbar focus or disrupting the active full-screen examination window.
 - **Clientless Secondary Viewer:** A student or helper on the same Wi-Fi network can view and interact with the remote screen using any standard browser on a phone, tablet, or secondary laptop without installing any software.
 
-### 🛡️ Institutional Detection & Mitigation Guidelines
-Colleges, universities, and testing centers are strongly advised to implement the following safeguards on testing machines and test-taking environments:
-1. **Network AP / Client Isolation:** Enable Access Point (AP) Isolation or private VLANs on school Wi-Fi networks so devices on the same subnet cannot communicate with each other.
-2. **Firewall Port Blocking:** Block or audit local inbound **TCP port 45821** (HTTP/WebSocket) and **UDP port 45820** (LAN Discovery).
-3. **Active Listener Checks:** Pre-exam system checks can audit listening sockets using `netstat -ano | findstr 45821` to ensure no local mirroring server is active.
-4. **Process Whitelisting:** Enforce restricted user privileges on testing machines to prevent unauthorized background interpreters (`python.exe`, `pythonw.exe`, `uvicorn`) from executing during examinations.
+### 2. How could it disadvantage an institution?
+
+| Risk | Potential Impact |
+| :--- | :--- |
+| **Unauthorized screen viewing** | A student could share examination questions with another person in real time without triggering on-screen alert notifications. |
+| **Outside assistance** | A remote helper could potentially view questions and communicate answers back through external channels (e.g. discreet audio earpieces, messaging). |
+| **Assessment integrity** | Final test results, grades, and percentile ranks may not accurately reflect a student's true independent knowledge or competence. |
+| **Confidentiality breach** | Proprietary, copyrighted, or standardized question banks could be viewed, transcribed, copied, or leaked publicly. |
+| **Monitoring blind spots** | Traditional cloud or firewall network monitoring tools miss traffic that stays entirely within a local network (LAN) boundary. |
+| **Certification & grading reliability** | Institutions, colleges, and examination boards may have difficulty trusting examination results and academic credentials if unauthorized assistance occurs undetected. |
+| **Unfair grading distribution** | When dishonest scores skew grading curves, honest test-takers are unfairly disadvantaged in competitive academic rankings. |
+| **Institutional reputation loss** | Widespread unaddressed remote assistance during high-stakes exams can damage an institution's accreditation standing and educational reputation. |
 
 ---
 
