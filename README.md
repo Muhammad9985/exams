@@ -358,6 +358,29 @@ If another computer on your LAN cannot access the host URL, run **`add_firewall_
 
 ---
 
+## ⚠️ Academic Integrity & Proctoring Advisory (Schools / Colleges / Universities)
+
+> [!WARNING]
+> **Notice to Educational Institutions, Examination Boards, and Online Proctoring Systems:**
+> Because **MyAcs** operates 100% offline over a Local Area Network (LAN) without cloud servers, external internet traffic, or third-party accounts, it presents a known security risk and disadvantage for institutions administering computer-based tests and online proctored examinations.
+
+### 🔍 Risk of Academic Misuse
+Students participating in online tests or remote proctored exams could potentially misuse this software to covertly mirror exam screens to a secondary computer, bypassing conventional online exam protections:
+- **Circumventing Online Exam Protectors:** Conventional automated proctoring services (such as [Examus](https://ru.examus.net/), Safe Exam Browser, Proctorio, Examity, etc.) predominantly inspect external cloud connections (TeamViewer, AnyDesk, Discord, Zoom) and browser tab switches.
+- **Zero Internet Traffic:** Because MyAcs streams strictly across the local Wi-Fi / Ethernet subnet, external cloud firewall rules and cloud traffic monitors will not detect data leaving the local network.
+- **Zero Host Cursor Blinking or Visual Artifacts:** The pure `SRCCOPY` capture mechanism avoids GDI cursor blinking or screen flashing, giving no visual clue to an on-screen proctoring webcam or screen recorder.
+- **Silent Background Execution:** The host service operates silently as `pythonw.exe` without taking taskbar focus or disrupting the active full-screen examination window.
+- **Clientless Secondary Viewer:** A student or helper on the same Wi-Fi network can view and interact with the remote screen using any standard browser on a phone, tablet, or secondary laptop without installing any software.
+
+### 🛡️ Institutional Detection & Mitigation Guidelines
+Colleges, universities, and testing centers are strongly advised to implement the following safeguards on testing machines and test-taking environments:
+1. **Network AP / Client Isolation:** Enable Access Point (AP) Isolation or private VLANs on school Wi-Fi networks so devices on the same subnet cannot communicate with each other.
+2. **Firewall Port Blocking:** Block or audit local inbound **TCP port 45821** (HTTP/WebSocket) and **UDP port 45820** (LAN Discovery).
+3. **Active Listener Checks:** Pre-exam system checks can audit listening sockets using `netstat -ano | findstr 45821` to ensure no local mirroring server is active.
+4. **Process Whitelisting:** Enforce restricted user privileges on testing machines to prevent unauthorized background interpreters (`python.exe`, `pythonw.exe`, `uvicorn`) from executing during examinations.
+
+---
+
 ## 📄 License & Author
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for full details.
