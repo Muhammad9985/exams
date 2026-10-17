@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyAcs — Local Network Screen Mirroring</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Top Application Header -->
+    <header class="app-header">
+      <div class="brand-section">
+        <div class="brand-logo">
+          <!-- Cast / Monitor SVG Icon -->
+          <svg viewBox="0 0 24 24">
+            <path d="M21 3H3C1.9 3 1 3.9 1 5V17C1 18.1 1.9 19 3 19H8V21H16V19H21C22.1 19 23 18.1 23 17V5C23 3.9 22.1 3 21 3M21 17H3V5H21V17Z"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>MyAcs</h1>
+          <p>Local Network Screen Mirroring • View-Only</p>
+        </div>
+      </div>
+
+      <div class="header-status">
+        <button class="btn-primary" style="padding: 0.5rem 1.1rem; font-size: 0.85rem;" onclick="viewThisHostScreen()">
+          ▶ Watch Screen
+        </button>
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          <span id="lanIpBadge">127.0.0.1:45821</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Body -->
+    <main class="main-content">
+
+      <!-- Remote Viewer Hero (Displayed when accessed from other LAN PCs) -->
+      <div id="remoteViewerHero" style="display: none; background: linear-gradient(135deg, rgba(99, 102, 241, 0.22), rgba(6, 182, 212, 0.22)); border: 1px solid rgba(99, 102, 241, 0.45); border-radius: 14px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: center; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+        <div style="font-size: 1.8rem; margin-bottom: 0.25rem;">🖥️</div>
+        <h2 style="font-size: 1.35rem; font-weight: 700; color: #ffffff; margin-bottom: 0.35rem;">
+          Viewing <span id="heroHostName" style="color: #38bdf8;">DESKTOP</span> over Local Network
+        </h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto 1.25rem auto;">
+          You are connected to this PC. Click below to stream its screen in real-time with ultra-low latency.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+          <button class="btn-primary" style="font-size: 1rem; padding: 0.75rem 2rem; border-radius: 10px; box-shadow: 0 4px 20px rgba(99, 102, 241, 0.5);" onclick="viewThisHostScreen()">
+            ▶ View Live Screen Now
+          </button>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        
+        <!-- Card: Permanent Device ID -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              Permanent Device Identity
+            </div>
+          </div>
+          <div class="device-id-container">
+            <div class="device-id-header">Your Device ID (Permanent)</div>
+            <div class="device-id-box">
+              <div class="device-id-value" id="myDeviceId">ACS-....-....</div>
+              <button class="btn-icon" onclick="copyDeviceId()">
+                <svg style="width:14px;height:14px;fill:currentColor" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                Copy
+              </button>
+            </div>
+            <div class="device-metadata">
+              <span>Computer Name: <strong id="myDeviceName">DESKTOP</strong></span>
+              <span style="color: var(--accent-green); font-weight: 600;">● Available on LAN</span>
+            </div>
+          </div>
+          <div style="margin-top: 1rem; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-weight: 700; font-size: 0.9rem; color: #ffffff;">Share with LAN PCs</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);" id="shareUrlText">Open in any browser</div>
+            </div>
+            <button class="btn-icon" onclick="copyLanUrl()">
+              Copy Link
+            </button>
+          </div>
+        </div>
+
+        <!-- Card: Security & Access PIN -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+              Security & Access PIN
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">
+            Viewers must enter this PIN to connect. Device IDs do not act as the sole credential.
+          </p>
+          <div class="pin-display-group">
+            <input type="text" id="myPin" class="pin-input" value="123456" maxlength="8">
+            <button class="btn-icon" onclick="updatePin()">Save PIN</button>
+          </div>
+          <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-weight: 600; font-size: 0.9rem;">Remote Control Access</div>
+              <div style="font-size: 0.75rem; color: var(--text-dim);">Enable mouse clicks, movement, and keyboard typing for LAN viewers</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="remoteControlToggle" checked onchange="toggleRemoteControlSetting()">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Card: Background Service & Windows Autostart -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+              Background Operation & Startup
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <div>
+              <div style="font-weight: 600; font-size: 0.95rem;">Start with Windows</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Launch automatically on boot in background</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="autostartToggle" onchange="toggleAutostart()">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div style="background: rgba(0,0,0,0.25); border-radius: 10px; padding: 0.85rem; font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">
+            ✓ <strong>Persistent Availability:</strong> Screen remains viewable even when this window is closed.<br>
+            ✓ <strong>Tray Icon:</strong> Right-click the system tray icon to reopen or manage.
+          </div>
+        </div>
+
+        <!-- Card: Active Viewers -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+              Active Connected Viewers (<span id="activeViewersCount">0</span>)
+            </div>
+          </div>
+          <div id="activeViewersList">
+            <p style="color: var(--text-dim); font-size: 0.85rem;">No active viewers connected.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- LIVE SCREEN VIEWER FULLSCREEN OVERLAY -->
+    <div id="viewerModal" class="viewer-modal">
+      
+      <!-- Small Floating Button to Re-Show Menu When Hidden -->
+      <button id="btnShowMenu" class="btn-show-toolbar" onclick="showViewerToolbar()" title="Show Menu">
+        <span>☰ Menu</span> <span style="font-size: 10px;">▼</span>
+      </button>
+
+      <!-- Floating Glass Toolbar -->
+      <div id="viewerToolbar" class="viewer-toolbar">
+        <button id="btnControlToggle" class="btn-icon" style="background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.4); color: #4ade80; padding: 2px 8px; height: 26px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; flex-shrink: 0;" onclick="toggleControlMode()">
+          <span>🎮 Control: ON</span>
+        </button>
+        <span id="viewerTargetTitle" style="font-weight: 600; font-size: 0.78rem; color: #ffffff; white-space: nowrap; max-width: 200px; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0;">Remote PC</span>
+        
+        <div class="viewer-controls">
+          <!-- Monitor Selector -->
+          <select id="viewerMonitorSelect" class="viewer-select" onchange="changeMonitorSelection()">
+            <option value="1">Display 1</option>
+          </select>
+
+          <!-- Quality Selector -->
+          <select id="viewerQualitySelect" class="viewer-select" onchange="changeQualityPreset()">
+            <option value="speed">Speed (60% 720p)</option>
+            <option value="balanced" selected>Balanced (75%)</option>
+            <option value="high">High (85% 1080p)</option>
+            <option value="ultra">Ultra (92% Native)</option>
+          </select>
+
+          <span id="viewerStats" class="viewer-stats-pill">0 FPS | 0 ms | 0 KB/s</span>
+
+          <button class="btn-icon" onclick="toggleFullscreen()" title="Toggle Fullscreen" style="height: 26px; padding: 2px 6px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg style="width:13px;height:13px;fill:currentColor" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+          </button>
+
+          <!-- Hide Menu Button -->
+          <button id="btnHideMenu" class="btn-icon" onclick="hideViewerToolbar()" title="Hide Top Control Bar" style="height: 26px; padding: 2px 8px; font-size: 0.75rem; border-radius: 5px; background: rgba(51, 65, 85, 0.45); color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.12); display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; flex-shrink: 0;">
+            <span>Hide Menu ▲</span>
+          </button>
+
+          <button class="btn-danger" onclick="closeViewer()" style="height: 26px; padding: 2px 10px; font-size: 0.75rem; line-height: 1; display: inline-flex; align-items: center; flex-shrink: 0;">Disconnect</button>
+        </div>
+      </div>
+
+      <!-- Auto Reconnect Notification Banner -->
+      <div id="reconnectBanner" class="reconnect-banner">
+        ⚠️ Connection interrupted. Reconnecting automatically in 3s... (Attempt 1)
+      </div>
+
+      <!-- Viewport with Low-Latency Canvas -->
+      <div class="viewer-viewport">
+        <canvas id="screenCanvas"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
